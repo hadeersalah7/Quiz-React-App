@@ -5,46 +5,37 @@ import Questions from './Questions'
 export default function Quiz() {
 
     const [userAnswer, setUserAnswer] = useState([])
-    const [answerState, setAnswerState] = useState("")
-    const activeQuestionIndex = answerState === "" ? userAnswer.length : userAnswer.length - 1
-
-    const quizIsCompleted = activeQuestionIndex === QUESTIONS.length
+    const activeQuestionIndex = userAnswer.length;
+    const quizIsCompleted = activeQuestionIndex === QUESTIONS.length;
     const handleAddAnswer = useCallback((selectedAnswer) => {
-        setAnswerState("answered")
         setUserAnswer((prevAnswer) => {
-            return [...prevAnswer, selectedAnswer]
-        })
-        setTimeout(() => {
-            if (selectedAnswer === QUESTIONS[activeQuestionIndex].answers[0]) {
-                setAnswerState("correct")
-            } else {
-                setAnswerState("wrong")
-            }
-            setTimeout(() => {
-                setAnswerState("")
-            }, 2000)
-        }, 1000)
-    }, [activeQuestionIndex])
-    if (quizIsCompleted) {
-        return <div id='summary'>
-            <img src={quizCompleted} alt='Trophy Image'/>
-            <h2>Quiz Completed! ^^</h2>
-        </div>
-    }
+            return [...prevAnswer, selectedAnswer];
+        });
+    }, []);
+
+const skippedTimeOut = useCallback(
+        () => handleAddAnswer(null),
+        [handleAddAnswer]
+    );
     
-    const skippedTimeOut = useCallback(() => handleAddAnswer(null), [handleAddAnswer])
+    if (quizIsCompleted) {
+        return (
+            <div id="summary">
+                <img src={quizCompleted} alt="Trophy Image" />
+                <h2>Quiz Completed! ^^</h2>
+            </div>
+        );
+    }
+
+    
     return (
-        <div id='quiz'>
+        <div id="quiz">
             <Questions
                 key={activeQuestionIndex}
+                index={activeQuestionIndex}
                 onSkip={skippedTimeOut}
-                questionText={QUESTIONS[activeQuestionIndex].text}
-                answerState={answerState}
-                answers={QUESTIONS[activeQuestionIndex].answers}
-                selectedAnswer={userAnswer[userAnswer.length - 1]}
-                onSelectedAnswer = {handleAddAnswer}
+                onSelectedAnswer={handleAddAnswer}
             />
         </div>
-
-    )
+    );
 }
