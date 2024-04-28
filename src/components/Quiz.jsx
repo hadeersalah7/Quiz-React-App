@@ -1,7 +1,8 @@
 import { useState, useCallback, useRef } from 'react'
 import QUESTIONS from "../questions"
-import quizCompleted from "../assets/quiz-complete.png"
+
 import Questions from './Questions'
+import Summary from './Summary';
 export default function Quiz() {
 
     const [userAnswer, setUserAnswer] = useState([])
@@ -20,10 +21,7 @@ const skippedTimeOut = useCallback(
     
     if (quizIsCompleted) {
         return (
-            <div id="summary">
-                <img src={quizCompleted} alt="Trophy Image" />
-                <h2>Quiz Completed! ^^</h2>
-            </div>
+            <Summary userAnswer={ userAnswer} />
         );
     }
 
