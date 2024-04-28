@@ -8,7 +8,7 @@ export default function Quiz() {
     const [userAnswer, setUserAnswer] = useState([])
     const activeQuestionIndex = userAnswer.length;
     const quizIsCompleted = activeQuestionIndex === QUESTIONS.length;
-    const handleAddAnswer = useCallback((selectedAnswer) => {
+    const handleAddAnswer = useCallback(function handleSelectedAnswer(selectedAnswer)  {
         setUserAnswer((prevAnswer) => {
             return [...prevAnswer, selectedAnswer];
         });
@@ -20,9 +20,7 @@ const skippedTimeOut = useCallback(
     );
     
     if (quizIsCompleted) {
-        return (
-            <Summary userAnswer={ userAnswer} />
-        );
+        return  <Summary userAnswer={ userAnswer} />
     }
 
     
